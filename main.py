@@ -50,11 +50,9 @@ graph = builder.compile(checkpointer=memory)
 
 def stream_graph_updates(user_input: str):
     msgs = [ {"role": "user", "content": user_input} ]
-    while True: #TODO: need to fix this to return after END and also expect new user input.
-        for event in graph.stream({"messages": msgs}, config):
-            for name, value in event.items():
-                print(f"{name.title()}: ", value["messages"][-1].content)
-                print("-" * 100)
-                    
+    for event in graph.stream({"messages": msgs}, config):
+        for name, value in event.items():
+            print(f"{name.title()}: ", value["messages"][-1].content)
+            print("-" * 100)                    
 # Run
 stream_graph_updates("azure openai, responses api , file input for base64 pdf payload doesn't seem to be working. The file upload and then analyze functionality seems to be working but base 64 not. Search for GitHub issues, Microsoft documentation and other web results to explain to me what is the current status .")
