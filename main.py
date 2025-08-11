@@ -8,19 +8,15 @@ from llm_models import llm5, llm_reasoning04mini
 from prompts import *
 load_dotenv()
 
+#TODO: prevent infinite loops by checking the number of iterations or messages
+
 class State(TypedDict):
-    counter: int
-    target: int
     messages: Annotated[list, add_messages]
 
 config = {"configurable": {"thread_id": "1"}}
 memory = MemorySaver()
 
-def worker(state: State) -> dict:
-    if "counter" not in state:
-        state["counter"] = 0
-    counter = state["counter"] + 1
-    print(f"Worker: counter -> {counter}")
+def worker(state: State) -> dict:  
     prompt = [
         {"role": "system", "content": state["messages"][-1].content},
     ]
@@ -38,6 +34,7 @@ def supervisor(state: State) -> dict:
 # Routing logic: keep looping or end
 def route(state: State):
     decision = END if "END WORKER NOW" in state["messages"][-1].content else "worker"
+    print(f"Decision made by supervisor: {decision}")
     return decision
 
 # Build graph
