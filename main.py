@@ -50,7 +50,7 @@ graph = builder.compile(checkpointer=memory)
 
 def stream_graph_updates(user_input: str):
     msgs = [ {"role": "user", "content": user_input} ]
-    while True:
+    while True: #TODO: need to fix this to return after END and also expect new user input.
         for event in graph.stream({"messages": msgs}, config):
             for name, value in event.items():
                 print(f"{name.title()}: ", value["messages"][-1].content)
