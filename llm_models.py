@@ -36,3 +36,8 @@ llm41 = init_chat_model(
     "azure_openai:gpt-4.1",
     azure_deployment="gpt-4.1"
 )
+
+llm5mini = init_chat_model(
+    "azure_openai:gpt-5-mini",
+    azure_deployment="gpt-5-mini"
+)
